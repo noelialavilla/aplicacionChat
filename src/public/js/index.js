@@ -13,6 +13,7 @@ Swal.fire({
     allowEscapeKey: false
 }).then(result =>{
     user = result.value;
+    socket.emit('authenticated', user);
 });
 
 chatbox.addEventListener('keyup', evt =>{
@@ -31,4 +32,15 @@ socket.on('messageLogs', data=>{
         messages +=`${message.user} dice: ${message.message}<br/>`;
     });
     log.innerHTML=messages;
-})
+});
+
+socket.on('newUserConnected', data=>{
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        title: `${data} se ha unido al chat.`,
+        icon: 'success'
+    });
+});

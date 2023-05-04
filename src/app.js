@@ -24,4 +24,8 @@ io.on('connection', socket =>{
         messages.push(data);
         io.emit('messageLogs', messages);
     });
+    socket.on('authenticated', data=>{
+        socket.emit('messageLogs', messages); //usamos socket.emit porque solo queremos q le llegue al usuario q se acaba de conectar
+        socket.broadcast.emit('newUserConnected', data); //broadcast les llega a todos menos al q se acaba de conectar
+    });
 });
