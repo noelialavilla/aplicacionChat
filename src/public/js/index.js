@@ -14,3 +14,21 @@ Swal.fire({
 }).then(result =>{
     user = result.value;
 });
+
+chatbox.addEventListener('keyup', evt =>{
+    if(evt.key ==='Enter'){
+        if(chatbox.value.trim().length >0){
+            socket.emit('message', {user, message: chatbox.value});
+        }
+        chatbox.value='';
+    }
+});
+
+socket.on('messageLogs', data=>{
+    let log = document.getElementById('messageLogs');
+    let messages='';
+    data.forEach(message =>{
+        messages +=`${message.user} dice: ${message.message}<br/>`;
+    });
+    log.innerHTML=messages;
+})

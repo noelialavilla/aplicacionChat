@@ -16,3 +16,12 @@ app.use('/',viewsRouter);
 
 const server = app.listen(8080, ()=>console.log('Server running at port 8080'));
 const io = new Server(server);
+
+const messages = [];
+io.on('connection', socket =>{
+    console.log('Nuevo cliente conectado');
+    socket.on('message', data=>{
+        messages.push(data);
+        io.emit('messageLogs', messages);
+    });
+});
